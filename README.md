@@ -23,18 +23,18 @@ Backend **http://localhost:5000**
 
 | Method | Path                   | description           | Body |
 | :----: | ---------------        | --------------------  | ---- |
-|  GET   | `/protected`           | protected route       |      |
 |  GET   | `/users/:id`           | fetch user profile    |      |
 |  GET   | `/users/`              | fetch users data      |      |
 |  GET   | `/events/:id`          | fetch event profile   |      |
 |  GET   | `/events/`             | fetch events data     |      |
 |  POST  | `/events/new`          | create event          | `{ owner, name, description, location, date, initTime, endTime }` |
 |  POST  | `/events/:id`          | Update event profile  | `{ name, description, location, date, initTime, endTime }` |
-|  POST  | `/events/:id/delete`   | Delete event profile  |      |
-|  POST  | `/users/:id`           | Update profile        | `{ about, imgUrl, favs, fans, location }` |
+| DELETE | `/events/:id`          | Delete event profile  |      |
+|  POST  | `/users/:id`           | Update profile        | `{ imgUrl, breed, birth, gender, about }` |
+|  POST  | `/favs/:targetUserId`  | adding favs           | `{ status }` | 
 |  GET   | `/messages/`           | fetch chat list       |      |
 |  GET   | `/messages/:id`        | fetch 1 chat data     |      |
-|  POST  | `/messages/:id`        | update 1 chat data    | `{ conversation, content, owner, timeStamp }`  |
+|  POST  | `/messages/:id`        | update 1 chat data    | `{ room_id, content, sender }`  |
 
 ### Auth endpoints
 
