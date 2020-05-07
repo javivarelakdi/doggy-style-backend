@@ -48,58 +48,69 @@ Backend **http://localhost:5000**
 
 
 ## Models
-​
+
 ### User model
 ​
-   {
-    	username: { type: String, required: true, unique: true },
-        password: { type: String, required: true },
-        imgUrl: String,
-        breed: String,
-        birth: Date,
-        about: String,
-        location: {type: Schema.Types.ObjectId, ref: 'Location'},
-        gender: { type: String, enum: ['female', 'male', 'non-binary'] },
-        favs:[{ type: Schema.Types.ObjectId, ref: 'User' }],
-        fans:[{ type: Schema.Types.ObjectId, ref: 'User' }]
-    }
+{
+	username: { type: String, required: true, unique: true },
+	password: { type: String, required: true },
+	imgUrl: String,
+	breed: String,
+	birth: Date,
+	about: String,
+	location: {type: Schema.Types.ObjectId, ref: 'Location'},
+	gender: { type: String, enum: ['female', 'male', 'non-binary'] },
+	favs:[{ type: Schema.Types.ObjectId, ref: 'User' }],
+	fans:[{ type: Schema.Types.ObjectId, ref: 'User' }]
+},
+{ timestamps: true }
 
 ### Event model
 ​
-	{ 
-    	owner: { type: Schema.Types.ObjectId, ref: 'User'},
-		name: { type: String, required: true },
-		description: String,
-		location: {type: Schema.Types.ObjectId, ref: 'Location'},
-		date: { type: Date, required: true },
-		initTime: { type: String, required: true },
-		endTime: { type: String, required: true },
-		attendees:[{ type: Schema.Types.ObjectId, ref: 'User' }]
-	}
+{
+	owner: { type: Schema.Types.ObjectId, ref: "User" },
+	name: { type: String, required: true },
+	description: String,
+	location: { type: Schema.Types.ObjectId, ref: "Location" },
+	date: { type: Date, required: true },
+	initTime: { type: String, required: true },
+	endTime: { type: String, required: true },
+	attendees: [{ type: Schema.Types.ObjectId, ref: "User" }]
+},
+{ timestamps: true }
 
 ### Location model
 
-	{
-		type: {
-			type: String,
-			enum: ['Point'],
-			default: 'Point',
-			required: true
-		},
-		coordinates: {
-			type: [Number],
-			required: true
-		}
+{
+	type: {
+		type: String,
+		enum: ['Point'],
+		default: 'Point',
+		required: true
+	},
+	coordinates: {
+		type: [Number],
+		required: true
 	}
+},
+{ timestamps: true }
 
-### Message model
+### Chat Room model
 
-	{
-		owner: { type: Schema.Types.ObjectId, ref: 'User'}, 
-		content: String,
-		timeStamp: String
-	}
-​
+{
+	users: [{ type: Schema.Types.ObjectId, ref: "User" }],
+	messages: [{ type: Schema.Types.ObjectId, ref: "Message" }]
+},
+{ timestamps: true }
+
+### Chat Message model
+
+{
+	sender: { type: Schema.Types.ObjectId, ref: "User" },
+	content: String
+},
+{ timestamps: true }
+
 ### Trello
 
 Link to Trello
