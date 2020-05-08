@@ -98,7 +98,7 @@ router.delete("/:id", (req, res, next) => {
 });
 
 // update event POST action
-router.put("/:id", async (req, res, next) => {
+router.post("/:id", async (req, res, next) => {
   const {
     name,
     description,

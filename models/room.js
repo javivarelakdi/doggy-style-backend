@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const chatRoomSchema = new Schema(
   {
     users: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    messages: [{ type: Schema.Types.ObjectId, ref: "Message" }]
+    messages: [{ type: Schema.Types.ObjectId, ref: "ChatMessage" }]
   },
   { timestamps: true }
 );

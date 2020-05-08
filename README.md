@@ -31,10 +31,11 @@ Backend **http://localhost:5000**
 |  POST  | `/events/:id`          | Update event profile  | `{ name, description, location, date, initTime, endTime }` |
 | DELETE | `/events/:id`          | Delete event profile  |      |
 |  POST  | `/users/:id`           | Update profile        | `{ imgUrl, breed, birth, gender, about }` |
-|  POST  | `/favs/:targetUserId`  | adding favs           | `{ status }` | 
-|  GET   | `/messages/`           | fetch chat list       |      |
-|  GET   | `/messages/:id`        | fetch 1 chat data     |      |
-|  POST  | `/messages/:id`        | update 1 chat data    | `{ room_id, content, sender }`  |
+|  POST  | `users/favs/:targetUserId`  | adding favs      | `{ status }` | 
+|  GET   | `/chats/`              | fetch chat list       |      |
+|  POST  | `/chats/new`           | create chat           | `{targetUserId }`   |
+|  GET   | `/chats/:id`           | fetch 1 chat data     |      |
+|  PUT   | `/chats/:id`           | update 1 chat data    | `{content, senderId }`  |
 
 ### Auth endpoints
 
