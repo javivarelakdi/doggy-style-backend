@@ -10,6 +10,7 @@ router.use(checkIfLoggedIn);
 // return list of users
 router.get("/", (req, res, next) => {
   User.find()
+    .populate("location")
     .then(users => {
       res.status(200).json(users);
     })
@@ -59,6 +60,7 @@ router.get("/:id", (req, res, next) => {
   User.findById(req.params.id)
     .populate("favs")
     .populate("fans")
+    .populate("location")
     .then(user => {
       res.status(200).json(user);
     })
