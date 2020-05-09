@@ -65,16 +65,26 @@ router.post("/:id/attendee", async (req, res, next) => {
   const attendee = req.session.currentUser._id;
   if (status === "true") {
     try {
-      await Event.update({ _id: id }, { $push: { attendees: attendee } });
-      const updatedEvent = await Event.findById(id);
+      const updatedEvent = await Event.findByIdAndUpdate(
+        id,
+        {
+          $push: { attendees: attendee }
+        },
+        { new: true }
+      );
       res.status(200).json(updatedEvent);
     } catch (error) {
       next(error);
     }
   } else {
     try {
-      await Event.update({ _id: id }, { $pull: { attendees: attendee } });
-      const updatedEvent = await Event.findById(id);
+      const updatedEvent = await Event.findByIdAndUpdate(
+        id,
+        {
+          $pull: { attendees: attendee }
+        },
+        { new: true }
+      );
       res.status(200).json(updatedEvent);
     } catch (error) {
       next(error);
@@ -111,15 +121,15 @@ router.post("/:id", async (req, res, next) => {
   } = req.body;
   const { id } = req.params;
   try {
-    await Location.update(
+    await Location.findByIdAndUpdate(
       { _id: locId },
       { $set: { coordinates: [lng, lat] } }
     );
-    await Event.update(
-      { _id: id },
-      { $set: { name, description, date, initTime, endTime } }
+    const updatedEvent = await Event.findByIdAndUpdate(
+      id,
+      { $set: { name, description, date, initTime, endTime } },
+      { new: true }
     );
-    const updatedEvent = await Event.findById(id);
     res.status(200).json(updatedEvent);
   } catch (error) {
     next(error);

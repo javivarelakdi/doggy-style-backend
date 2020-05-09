@@ -48,7 +48,10 @@ router.put("/:id", async (req, res, next) => {
   const { id } = req.params;
   try {
     const message = await ChatMessage.create({ sender: senderId, content });
-    await ChatRoom.update({ _id: id }, { $push: { messages: message._id } });
+    await ChatRoom.findByIdAndUpdate(
+      { _id: id },
+      { $push: { messages: message._id } }
+    );
     res.status(200).json(message);
   } catch (error) {
     next(error);

@@ -24,30 +24,30 @@ router.post("/favs/:targetUserId", async (req, res, next) => {
   const { targetUserId } = req.params;
   if (status === "true") {
     try {
-      await User.update(
-        { _id: currentUser._id },
-        { $push: { favs: targetUserId } }
+      const userWithFav = await User.findByIdAndUpdate(
+        currentUser._id,
+        { $push: { favs: targetUserId } },
+        { new: true }
       );
-      await User.update(
+      await User.findByIdAndUpdate(
         { _id: targetUserId },
         { $push: { fans: currentUser._id } }
       );
-      const userWithFav = await User.findById(currentUser._id);
       res.status(200).json(userWithFav);
     } catch (error) {
       next(error);
     }
   } else if (status === "false") {
     try {
-      await User.update(
-        { _id: currentUser._id },
-        { $pull: { favs: targetUserId } }
+      const userWithFav = await User.findByIdAndUpdate(
+        currentUser._id,
+        { $pull: { favs: targetUserId } },
+        { new: true }
       );
-      await User.update(
+      await User.findByIdAndUpdate(
         { _id: targetUserId },
         { $pull: { fans: currentUser._id } }
       );
-      const userWithFav = await User.findById(currentUser._id);
       res.status(200).json(userWithFav);
     } catch (error) {
       next(error);
@@ -72,11 +72,11 @@ router.post("/:id", async (req, res, next) => {
   const { imgUrl, breed, birth, about, gender } = req.body;
   const { id } = req.params;
   try {
-    await User.update(
-      { _id: id },
-      { $set: { imgUrl, breed, birth, about, gender } }
+    const editedUser = await User.findByIdAndUpdate(
+      id,
+      { $set: { imgUrl, breed, birth, about, gender } },
+      { new: true }
     );
-    const editedUser = await User.findById(id);
     res.status(200).json(editedUser);
   } catch (error) {
     next(error);

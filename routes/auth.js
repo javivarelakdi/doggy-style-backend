@@ -72,14 +72,9 @@ router.post(
       }
       if (bcrypt.compareSync(password, user.password)) {
         req.session.currentUser = user;
-        if (user.location) {
-          await Location.findByIdAndUpdate(user.location, {
-            $set: { coordinates: [lng, lat] }
-          });
-        } else {
-          const location = await Location.create({ coordinates: [lng, lat] });
-          await User.findByIdAndUpdate(user.id, { $set: { location } });
-        }
+        await Location.findByIdAndUpdate(user.location, {
+          $set: { coordinates: [lng, lat] }
+        });
         const updatedUser = await User.findById(user.id);
         res.status(200).json(updatedUser);
       }
