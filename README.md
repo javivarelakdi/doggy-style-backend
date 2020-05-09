@@ -42,8 +42,8 @@ Backend **http://localhost:5000**
 | Method | Path      | description    | Body                     |
 | :----: | --------- | -------------- | ------------------------ |
 |  GET   | `/whoami` | who am i       |                          |
-|  POST  | `/signup` | signup a user  | `{ username, password, imgUrl, breed, birth, gender, about }` |
-|  POST  | `/login`  | login a user   | `{ username, password }` |
+|  POST  | `/signup` | signup a user  | `{ username, password, imgUrl, breed, birth, gender, about, lng, lat }` |
+|  POST  | `/login`  | login a user   | `{ username, password, lng, lat }` |
 |  GET   | `/logout` | logout session |                          |
 
 
