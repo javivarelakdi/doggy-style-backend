@@ -64,7 +64,10 @@ router.post(
   "/login",
   checkUsernameAndPasswordNotEmpty,
   async (req, res, next) => {
-    const { username, password, lng, lat } = res.locals.auth;
+    const { username, password } = res.locals.auth;
+    // ftm I fake lng and lat since I haven´t configured yet ways to get this from frontend
+    const lng = "2.1566780196195054";
+    const lat = "2.1566780196195054";
     try {
       const user = await User.findOne({ username });
       if (!user) {
