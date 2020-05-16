@@ -69,9 +69,9 @@ router.post(
     const lng = "2.1566780196195054";
     const lat = "2.1566780196195054";
     try {
-      const user = await (
-        await (await User.findOne({ username })).populate("favs")
-      ).populate("fans");
+      const user = await User.findOne({ username })
+        .populate("favs")
+        .populate("fans");
       if (!user) {
         return res.status(404).json({ code: "not-found" });
       }
@@ -80,9 +80,9 @@ router.post(
         await Location.findByIdAndUpdate(user.location, {
           $set: { coordinates: [lng, lat] }
         });
-        const updatedUser = await (
-          await (await User.findById(user.id)).populated("favs")
-        ).populate("fans");
+        const updatedUser = await User.findById(user.id)
+          .populate("favs")
+          .populate("fans");
         res.status(200).json(updatedUser);
       }
       return res.status(404).json({ code: "not-found" });
