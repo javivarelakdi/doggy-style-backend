@@ -80,7 +80,9 @@ router.post(
         await Location.findByIdAndUpdate(user.location, {
           $set: { coordinates: [lng, lat] }
         });
-        const updatedUser = await User.findById(user.id);
+        const updatedUser = await (
+          await (await User.findById(user.id)).populated("favs")
+        ).populate("fans");
         res.status(200).json(updatedUser);
       }
       return res.status(404).json({ code: "not-found" });
