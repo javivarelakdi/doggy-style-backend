@@ -69,7 +69,9 @@ router.post(
     const lng = "2.1566780196195054";
     const lat = "2.1566780196195054";
     try {
-      const user = await User.findOne({ username });
+      const user = await (
+        await (await User.findOne({ username })).populate("favs")
+      ).populate("fans");
       if (!user) {
         return res.status(404).json({ code: "not-found" });
       }
