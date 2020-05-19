@@ -71,7 +71,7 @@ router.post("/:id/attendee", async (req, res, next) => {
           $push: { attendees: attendee }
         },
         { new: true }
-      );
+      ).populate("attendees");
       res.status(200).json(updatedEvent);
     } catch (error) {
       next(error);
