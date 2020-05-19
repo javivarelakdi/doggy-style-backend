@@ -60,10 +60,10 @@ router.get("/:id", (req, res, next) => {
 
 // update event POST action for adding attendee
 router.post("/:id/attendee", async (req, res, next) => {
-  const { status } = req.body;
+  const { isAttending } = req.body;
   const { id } = req.params;
   const attendee = req.session.currentUser._id;
-  if (status === "true") {
+  if (isAttending === "true") {
     try {
       const updatedEvent = await Event.findByIdAndUpdate(
         id,
