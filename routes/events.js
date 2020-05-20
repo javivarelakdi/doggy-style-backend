@@ -19,16 +19,9 @@ router.get("/", (req, res, next) => {
 
 // create event POST action
 router.post("/new", async (req, res, next) => {
-  const {
-    owner,
-    name,
-    description,
-    date,
-    initTime,
-    endTime,
-    lng,
-    lat
-  } = req.body;
+  const { owner, name, description, date, initTime, endTime } = req.body;
+  const lng = "2.1566780196195054";
+  const lat = "2.1566780196195054";
   try {
     const location = await Location.create({ coordinates: [lng, lat] });
     const newEvent = await Event.create({
@@ -109,16 +102,9 @@ router.delete("/:id", (req, res, next) => {
 
 // update event POST action
 router.post("/:id", async (req, res, next) => {
-  const {
-    name,
-    description,
-    date,
-    initTime,
-    endTime,
-    lng,
-    lat,
-    locId
-  } = req.body;
+  const { name, description, date, initTime, endTime, locId } = req.body;
+  const lng = "2.1566780196195054";
+  const lat = "2.1566780196195054";
   const { id } = req.params;
   try {
     await Location.findByIdAndUpdate(
