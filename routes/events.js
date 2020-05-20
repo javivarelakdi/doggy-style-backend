@@ -63,7 +63,7 @@ router.post("/:id/attendee", async (req, res, next) => {
   const { isAttending } = req.body;
   const { id } = req.params;
   const attendee = req.session.currentUser._id;
-  if (isAttending === "true") {
+  if (isAttending === true) {
     try {
       const updatedEvent = await Event.findByIdAndUpdate(
         id,
