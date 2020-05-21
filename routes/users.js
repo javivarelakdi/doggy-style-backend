@@ -20,9 +20,9 @@ router.get("/", (req, res, next) => {
 // update user POST action for adding favs and fans
 router.post("/favs/:targetUserId", async (req, res, next) => {
   const { currentUser } = req.session;
-  const { status } = req.body;
+  const { isFav } = req.body;
   const { targetUserId } = req.params;
-  if (status === "true") {
+  if (isFav === true) {
     try {
       const userWithFav = await User.findByIdAndUpdate(
         currentUser._id,
@@ -37,7 +37,7 @@ router.post("/favs/:targetUserId", async (req, res, next) => {
     } catch (error) {
       next(error);
     }
-  } else if (status === "false") {
+  } else if (!isFav) {
     try {
       const userWithFav = await User.findByIdAndUpdate(
         currentUser._id,
