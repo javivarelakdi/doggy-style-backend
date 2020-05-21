@@ -32,7 +32,10 @@ router.post("/new", async (req, res, next) => {
       initTime,
       endTime,
       location
-    });
+    })
+      .populate("attendees")
+      .populate("owner")
+      .populate("location");
     res.status(200).json(newEvent);
   } catch (error) {
     next(error);
