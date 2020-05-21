@@ -37,7 +37,7 @@ router.post("/favs/:targetUserId", async (req, res, next) => {
     } catch (error) {
       next(error);
     }
-  } else if (!isFav) {
+  } else {
     try {
       const userWithFav = await User.findByIdAndUpdate(
         currentUser._id,
