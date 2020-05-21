@@ -30,10 +30,10 @@ router.post(
       breed,
       birth,
       gender,
-      about,
-      lng,
-      lat
+      about
     } = res.locals.auth;
+    const lng = "2.1566780196195054";
+    const lat = "2.1566780196195054";
     try {
       const user = await User.findOne({ username });
       if (user) {
