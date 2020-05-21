@@ -24,31 +24,31 @@ router.post("/favs/:targetUserId", async (req, res, next) => {
   const { targetUserId } = req.params;
   if (isFav === true) {
     try {
-      const userWithFav = await User.findByIdAndUpdate(
+      await User.findByIdAndUpdate(
         currentUser._id,
         { $push: { favs: targetUserId } },
         { new: true }
       );
-      await User.findByIdAndUpdate(
+      const favUser = await User.findByIdAndUpdate(
         { _id: targetUserId },
         { $push: { fans: currentUser._id } }
       );
-      res.status(200).json(userWithFav);
+      res.status(200).json(favUser);
     } catch (error) {
       next(error);
     }
   } else {
     try {
-      const userWithFav = await User.findByIdAndUpdate(
+      await User.findByIdAndUpdate(
         currentUser._id,
         { $pull: { favs: targetUserId } },
         { new: true }
       );
-      await User.findByIdAndUpdate(
+      const favUser = await User.findByIdAndUpdate(
         { _id: targetUserId },
         { $pull: { fans: currentUser._id } }
       );
-      res.status(200).json(userWithFav);
+      res.status(200).json(favUser);
     } catch (error) {
       next(error);
     }
