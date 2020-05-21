@@ -33,11 +33,7 @@ router.post("/new", async (req, res, next) => {
       endTime,
       location
     });
-    const populatedNewEvent = await newEvent
-      .populate("attendees")
-      .populate("owner")
-      .populate("location");
-    res.status(200).json(populatedNewEvent);
+    res.status(200).json(newEvent);
   } catch (error) {
     next(error);
   }
