@@ -115,7 +115,10 @@ router.post("/:id", async (req, res, next) => {
       id,
       { $set: { name, description, date, initTime, endTime } },
       { new: true }
-    ).populate("attendees");
+    )
+      .populate("attendees")
+      .populate("owner")
+      .populate("location");
     res.status(200).json(updatedEvent);
   } catch (error) {
     next(error);
