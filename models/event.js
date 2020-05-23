@@ -4,10 +4,10 @@ const { Schema } = mongoose;
 
 const eventSchema = new Schema(
   {
-    owner: { type: Schema.Types.ObjectId, ref: "User" },
+    owner: { type: Schema.Types.ObjectId, ref: "User", required: true },
     name: { type: String, required: true },
     description: String,
-    location: { type: Schema.Types.ObjectId, ref: "Location" },
+    location: { type: Schema.Types.ObjectId, ref: "Location", required: true },
     date: { type: Date, required: true },
     initTime: { type: String, required: true },
     endTime: { type: String, required: true },
