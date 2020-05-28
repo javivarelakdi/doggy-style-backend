@@ -22,12 +22,13 @@ app.set("port", port);
 const server = http.createServer(app);
 const io = require("socket.io")(server);
 
-io.on("connection", socket => {
-  const { id } = socket.client;
-  console.log(`User connected: ${id}`);
-  socket.on("chatMessage", msg => {
-    // console.log(`${id}: ${msg}`);
-    io.emit("chatMessage", { id, msg });
+io.sockets.on("connection", socket => {
+  socket.on("join", data => {
+    socket.join(data.id); // We are using room of socket io
+  });
+  socket.on("newMessage", data => {
+    const { userTo, msg } = data;
+    io.sockets.in(userTo).emit("newMessage", { msg });
   });
 });
 
