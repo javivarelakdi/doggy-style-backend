@@ -27,8 +27,8 @@ io.sockets.on("connection", socket => {
     socket.join(data.id); // We are using room of socket io
   });
   socket.on("newMessage", data => {
-    const { userTo, msg } = data;
-    io.sockets.in(userTo).emit("newMessage", { msg });
+    const { roomId, sender, msg } = data;
+    io.sockets.in(roomId).emit("newMessage", { sender, msg });
   });
 });
 
