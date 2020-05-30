@@ -20,17 +20,17 @@ app.set("port", port);
  */
 
 const server = http.createServer(app);
-const io = require("socket.io")(server);
+// const io = require("socket.io")(server);
 
-io.sockets.on("connection", socket => {
-  socket.on("join", data => {
-    socket.join(data.id); // We are using room of socket io
-  });
-  socket.on("newMessage", data => {
-    const { roomId, sender, msg } = data;
-    io.sockets.in(roomId).emit("newMessage", { sender, msg });
-  });
-});
+// io.sockets.on("connection", socket => {
+//   socket.on("join", data => {
+//     socket.join(data.id); // We are using room of socket io
+//   });
+//   socket.on("newMessage", data => {
+//     const { roomId, sender, content } = data;
+//     io.sockets.in(roomId).emit("newMessage", { sender, content });
+//   });
+// });
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -95,3 +95,11 @@ function onListening() {
   const bind = typeof addr === "string" ? `pipe ${addr}` : `port ${addr.port}`;
   debug(`Listening on ${bind}`);
 }
+
+/**
+ * Socket Service
+ */
+
+const socketService = require("../lib/socket-service");
+
+socketService(server);

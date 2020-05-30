@@ -16,11 +16,19 @@ router.get("/", (req, res, next) => {
     .catch(next);
 });
 
-// show specific chat
+// getting last 10 messages of specific chat
 router.get("/:id", (req, res, next) => {
   ChatRoom.findById(req.params.id)
     .populate("users")
     .populate("messages")
+    .populate({
+      path: "messages",
+      populate: {
+        path: "sender"
+      },
+      limit: 10,
+      sort: { created: -1}
+    })
     .then(chat => {
       res.status(200).json(chat);
     })
