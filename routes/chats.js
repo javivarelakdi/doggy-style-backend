@@ -9,7 +9,14 @@ const ChatMessage = require("../models/message");
 router.get("/", (req, res, next) => {
   ChatRoom.find()
     .populate("users")
-    .populate("messages")
+    .populate({
+      path: "messages",
+      populate: {
+        path: "sender"
+      },
+      limit: 1,
+      sort: { created: -1 }
+    })
     .then(chats => {
       res.status(200).json(chats);
     })
@@ -20,14 +27,13 @@ router.get("/", (req, res, next) => {
 router.get("/:id", (req, res, next) => {
   ChatRoom.findById(req.params.id)
     .populate("users")
-    .populate("messages")
     .populate({
       path: "messages",
       populate: {
         path: "sender"
       },
       limit: 10,
-      sort: { created: -1}
+      sort: { created: -1 }
     })
     .then(chat => {
       res.status(200).json(chat);
