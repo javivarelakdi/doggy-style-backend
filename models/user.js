@@ -13,7 +13,8 @@ const userSchema = new Schema(
     location: { type: Schema.Types.ObjectId, ref: "Location", required: true },
     gender: { type: String, enum: ["female", "male", "non-binary"] },
     favs: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    fans: [{ type: Schema.Types.ObjectId, ref: "User" }]
+    fans: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    events: [{ type: Schema.Types.ObjectId, ref: "Event" }]
   },
   { timestamps: true }
 );

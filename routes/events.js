@@ -3,6 +3,7 @@ const express = require("express");
 
 const router = express.Router();
 const Event = require("../models/event");
+const User = require("../models/user");
 const Location = require("../models/location");
 
 // fetch list of events
@@ -40,11 +41,11 @@ router.post("/new", async (req, res, next) => {
       endTime,
       location
     });
-    const populated = await Event.findById(newEvent._id)
-      .populate("owner")
-      .populate("attendees")
-      .populate("location");
-    res.status(200).json(populated);
+    await User.findByIdAndUpdate(
+      { _id: owner._id },
+      { $push: { events: newEvent._id } }
+    );
+    res.status(200).json(newEvent);
   } catch (error) {
     next(error);
   }
@@ -97,18 +98,20 @@ router.post("/:id/attendee", async (req, res, next) => {
 });
 
 // delete event POST action
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
   const { id } = req.params;
-
-  Event.findByIdAndDelete(id)
-    .then(() => {
-      Event.find()
-        .then(events => {
-          res.status(200).json(events);
-        })
-        .catch(next);
-    })
-    .catch(next);
+  try {
+    const deleted = await Event.findByIdAndDelete(id);
+    const { owner } = deleted;
+    await User.findByIdAndUpdate(
+      { _id: owner },
+      { $pull: { events: deleted._id } }
+    );
+    const events = await Event.find();
+    res.status(200).json(events);
+  } catch (error) {
+    next(error);
+  }
 });
 
 // update event POST action

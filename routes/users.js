@@ -61,12 +61,19 @@ router.post("/favs/:targetUserId", async (req, res, next) => {
   }
 });
 
-// shows specific user populated with fans and favs
+// shows specific user populated with fans and favs and events
 router.get("/:id", (req, res, next) => {
   User.findById(req.params.id)
     .populate("favs")
     .populate("fans")
     .populate("location")
+    .populate({
+      path: "events",
+      limit: 3,
+      sort: {
+        date: -1 // Sort by Date Added DESC
+      }
+    })
     .then(user => {
       res.status(200).json(user);
     })
