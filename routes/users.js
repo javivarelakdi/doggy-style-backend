@@ -8,13 +8,29 @@ const router = express.Router();
 router.use(checkIfLoggedIn);
 
 // return list of users
-router.get("/", (req, res, next) => {
-  User.find()
-    .populate("location")
-    .then(users => {
-      res.status(200).json(users);
-    })
-    .catch(next);
+router.post("/", (req, res, next) => {
+  const { lng, lat } = req.body;
+  User.aggregate(
+    [
+      {
+        $geoNear: {
+          near: {
+            type: "Point",
+            coordinates: [lng, lat]
+          },
+          distanceField: "dist.calculated",
+          spherical: true
+        }
+      }
+    ],
+    (err, data) => {
+      if (err) {
+        next(err);
+        return;
+      }
+      res.send(data);
+    }
+  );
 });
 
 // update user POST action for adding favs and fans
@@ -33,9 +49,7 @@ router.post("/favs/:targetUserId", async (req, res, next) => {
         { _id: targetUserId },
         { $push: { fans: currentUser._id } },
         { new: true }
-      )
-        .populate("favs")
-        .populate("fans");
+      );
       res.status(200).json(favUser);
     } catch (error) {
       next(error);
@@ -51,9 +65,7 @@ router.post("/favs/:targetUserId", async (req, res, next) => {
         { _id: targetUserId },
         { $pull: { fans: currentUser._id } },
         { new: true }
-      )
-        .populate("favs")
-        .populate("fans");
+      );
       res.status(200).json(favUser);
     } catch (error) {
       next(error);
@@ -66,7 +78,6 @@ router.get("/:id", (req, res, next) => {
   User.findById(req.params.id)
     .populate("favs")
     .populate("fans")
-    .populate("location")
     .populate({
       path: "events",
       limit: 3,

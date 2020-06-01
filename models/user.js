@@ -10,7 +10,18 @@ const userSchema = new Schema(
     breed: String,
     birth: Date,
     about: String,
-    location: { type: Schema.Types.ObjectId, ref: "Location", required: true },
+    location: {
+      type: {
+        type: String,
+        enum: ["Point"],
+        default: "Point",
+        required: true
+      },
+      coordinates: {
+        type: [Number],
+        required: true
+      }
+    },
     gender: { type: String, enum: ["female", "male", "non-binary"] },
     favs: [{ type: Schema.Types.ObjectId, ref: "User" }],
     fans: [{ type: Schema.Types.ObjectId, ref: "User" }],
@@ -18,7 +29,7 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
-
+userSchema.index({ location: "2dsphere" });
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;

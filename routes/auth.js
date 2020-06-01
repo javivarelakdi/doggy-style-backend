@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 const { checkUsernameAndPasswordNotEmpty } = require("../middlewares");
 
 const User = require("../models/user");
-const Location = require("../models/location");
 
 const bcryptSalt = 10;
 
@@ -41,7 +40,6 @@ router.post(
       }
       const salt = bcrypt.genSaltSync(bcryptSalt);
       const hashedPassword = bcrypt.hashSync(password, salt);
-      const location = await Location.create({ coordinates: [lng, lat] });
       const newUser = await User.create({
         username,
         password: hashedPassword,
@@ -50,7 +48,7 @@ router.post(
         birth,
         gender,
         about,
-        location
+        location: { type: "Point", coordinates: [lng, lat] }
       });
       req.session.currentUser = newUser;
       return res.json(newUser);
@@ -66,23 +64,20 @@ router.post(
   async (req, res, next) => {
     const { username, password, lng, lat } = res.locals.auth;
     try {
-      const user = await User.findOne({ username })
-        .populate("favs")
-        .populate("fans");
+      const user = await User.findOne({ username });
       if (!user) {
         return res.status(404).json({ code: "not-found" });
       }
       if (bcrypt.compareSync(password, user.password)) {
-        req.session.currentUser = user;
-        await Location.findByIdAndUpdate(user.location, {
-          $set: { coordinates: [lng, lat] }
+        // req.session.currentUser = user;
+        const filter = { _id: user._id };
+        const update = { location: { type: "Point", coordinates: [lng, lat] } };
+        const userUpdated = await User.findByIdAndUpdate(filter, update, {
+          new: true
         });
-        const updatedUser = await User.findById(user.id)
-          .populate("favs")
-          .populate("fans");
-        res.status(200).json(updatedUser);
+        req.session.currentUser = userUpdated;
+        return res.status(200).json(userUpdated);
       }
-      return res.status(404).json({ code: "not-found" });
     } catch (error) {
       next(error);
     }
