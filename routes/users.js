@@ -44,12 +44,16 @@ router.post("/favs/:targetUserId", async (req, res, next) => {
         currentUser._id,
         { $push: { favs: targetUserId } },
         { new: true }
-      );
+      )
+        .populate("favs")
+        .populate("fans");
       const favUser = await User.findByIdAndUpdate(
         { _id: targetUserId },
         { $push: { fans: currentUser._id } },
         { new: true }
-      );
+      )
+        .populate("favs")
+        .populate("fans");
       res.status(200).json(favUser);
     } catch (error) {
       next(error);
