@@ -7,14 +7,13 @@ const ChatMessage = require("../models/message");
 
 // fetch list of chats
 router.get("/", (req, res, next) => {
-  ChatRoom.find()
+  ChatRoom.find({ users: req.session.currentUser._id })
     .populate("users")
     .populate({
       path: "messages",
       populate: {
         path: "sender"
       },
-      limit: 1,
       sort: { created: -1 }
     })
     .then(chats => {
@@ -23,7 +22,7 @@ router.get("/", (req, res, next) => {
     .catch(next);
 });
 
-// getting last 10 messages of specific chat
+// getting messages
 router.get("/:id", (req, res, next) => {
   ChatRoom.findById(req.params.id)
     .populate("users")
@@ -32,7 +31,6 @@ router.get("/:id", (req, res, next) => {
       populate: {
         path: "sender"
       },
-      limit: 10,
       sort: { created: -1 }
     })
     .then(chat => {
