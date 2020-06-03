@@ -69,16 +69,13 @@ router.post(
         return res.status(404).json({ code: "not-found" });
       }
       if (bcrypt.compareSync(password, user.password)) {
-        req.session.currentUser = user;
-        return res.status(200).json(user);
-        // this is to update location... not using for the demo.
-        // const filter = { _id: user._id };
-        // const update = { location: { type: "Point", coordinates: [lng, lat] } };
-        // const userUpdated = await User.findByIdAndUpdate(filter, update, {
-        //   new: true
-        // });
-        // req.session.currentUser = userUpdated;
-        // return res.status(200).json(userUpdated);
+        const filter = { _id: user._id };
+        const update = { location: { type: "Point", coordinates: [lng, lat] } };
+        const userUpdated = await User.findByIdAndUpdate(filter, update, {
+          new: true
+        });
+        req.session.currentUser = userUpdated;
+        return res.status(200).json(userUpdated);
       }
     } catch (error) {
       next(error);
