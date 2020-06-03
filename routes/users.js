@@ -46,14 +46,16 @@ router.post("/favs/:targetUserId", async (req, res, next) => {
         { new: true }
       )
         .populate("favs")
-        .populate("fans");
+        .populate("fans")
+        .populate("events");
       const favUser = await User.findByIdAndUpdate(
         { _id: targetUserId },
         { $push: { fans: currentUser._id } },
         { new: true }
       )
         .populate("favs")
-        .populate("fans");
+        .populate("fans")
+        .populate("events");
       res.status(200).json(favUser);
     } catch (error) {
       next(error);
@@ -64,12 +66,18 @@ router.post("/favs/:targetUserId", async (req, res, next) => {
         currentUser._id,
         { $pull: { favs: targetUserId } },
         { new: true }
-      );
+      )
+        .populate("favs")
+        .populate("fans")
+        .populate("events");
       const favUser = await User.findByIdAndUpdate(
         { _id: targetUserId },
         { $pull: { fans: currentUser._id } },
         { new: true }
-      );
+      )
+        .populate("favs")
+        .populate("fans")
+        .populate("events")
       res.status(200).json(favUser);
     } catch (error) {
       next(error);

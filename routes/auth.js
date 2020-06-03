@@ -71,6 +71,7 @@ router.post(
       if (bcrypt.compareSync(password, user.password)) {
         req.session.currentUser = user;
         return res.status(200).json(user);
+        // this is to update location... not using for the demo.
         // const filter = { _id: user._id };
         // const update = { location: { type: "Point", coordinates: [lng, lat] } };
         // const userUpdated = await User.findByIdAndUpdate(filter, update, {

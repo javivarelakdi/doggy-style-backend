@@ -41,6 +41,7 @@ router.post("/new", async (req, res, next) => {
       endTime,
       location
     });
+    newEvent.populate("owner").execPopulate();
     await User.findByIdAndUpdate(
       { _id: owner._id },
       { $push: { events: newEvent._id } }
@@ -89,7 +90,7 @@ router.post("/:id/attendee", async (req, res, next) => {
           $pull: { attendees: attendee }
         },
         { new: true }
-      );
+      ).populate("attendees");
       res.status(200).json(updatedEvent);
     } catch (error) {
       next(error);
