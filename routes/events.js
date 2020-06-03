@@ -9,6 +9,7 @@ const Location = require("../models/location");
 // fetch list of events
 router.get("/", (req, res, next) => {
   Event.find()
+    .sort("date")
     .populate("owner")
     .populate("attendees")
     .populate("location")
