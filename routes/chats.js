@@ -8,13 +8,14 @@ const ChatMessage = require("../models/message");
 // fetch list of chats
 router.get("/", (req, res, next) => {
   ChatRoom.find({ users: req.session.currentUser._id })
+    .sort({ updatedAt: -1 })
     .populate("users")
     .populate({
       path: "messages",
       populate: {
         path: "sender"
       },
-      sort: { updatedAt: -1 }
+      sort: { created: -1 }
     })
     .then(chats => {
       res.status(200).json(chats);
