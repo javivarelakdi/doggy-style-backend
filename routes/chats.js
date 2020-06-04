@@ -14,7 +14,7 @@ router.get("/", (req, res, next) => {
       populate: {
         path: "sender"
       },
-      sort: { created: -1 }
+      sort: { updatedAt: -1 }
     })
     .then(chats => {
       res.status(200).json(chats);
