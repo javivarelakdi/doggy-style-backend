@@ -112,9 +112,6 @@ Backend **http://localhost:5000**
 },
 { timestamps: true }
 
-### Trello
-
-[Link to Trello](https://trello.com/b/8Ok87uSv/doggy-style-react)
 
 ### Git
 
@@ -122,11 +119,7 @@ The url to your repository and to your deployed project
 
 [Repository Link](https://github.com/javivarelakdi/doggy-style-backend)
 
-[Deploy Link](http://heroku.com/)
 
-### Slides
-
-[Slides Link](http://slides.com/)
 
 
 
